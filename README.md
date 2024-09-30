@@ -1,5 +1,3 @@
 # moa_first_try
 
-my first project in JS.
-
-
+https://github.com/OleksSakhanskyi/moa_first_try
