@@ -9,74 +9,79 @@
     <title>Simple Calculator</title>
     
 </head>
+
+
+    
+
 <body>
 
-    <div class="calculator">
-        <input type="text" id="display" disabled>
-        <div class="calculator-grid">
-            <button onclick="clearDisplay()">C</button>
-            <button onclick="deleteLast()">DEL</button>
-            <button onclick="appendOperator('/')">/</button>
-            <button onclick="appendOperator('*')">*</button>
-            <button onclick="appendNumber('7')">7</button>
-            <button onclick="appendNumber('8')">8</button>
-            <button onclick="appendNumber('9')">9</button>
-            <button onclick="appendOperator('-')">-</button>
-            <button onclick="appendNumber('4')">4</button>
-            <button onclick="appendNumber('5')">5</button>
-            <button onclick="appendNumber('6')">6</button>
-            <button onclick="appendOperator('+')">+</button>
-            <button onclick="appendNumber('1')">1</button>
-            <button onclick="appendNumber('2')">2</button>
-            <button onclick="appendNumber('3')">3</button>
-            <button class="span-two" onclick="calculate()">=</button>
-            <button onclick="appendNumber('0')">0</button>
-            <button onclick="appendDot()">.</button>
-        </div>
-    </div>
+<div class="calculator">
+    <h2>Jednoduchá Kalkulačka</h2>
 
-    <script>
-        const display = document.getElementById('display');
-        let currentInput = '';
-        
-        function appendNumber(number) {
-            currentInput += number;
-            display.value = currentInput;
+    <!-- Vstup pro první číslo -->
+    <input type="number" id="number1" placeholder="První číslo">
+
+    <!-- Výběr operace -->
+    <select id="operation">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">*</option>
+        <option value="/">/</option>
+    </select>
+
+    <!-- Vstup pro druhé číslo -->
+    <input type="number" id="number2" placeholder="Druhé číslo">
+
+    <!-- Tlačítko pro výpočet -->
+    <button onclick="calculate()">Spočítej</button>
+
+    <!-- Zobrazení výsledku -->
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    // Funkce pro výpočet výsledku
+    function calculate() {
+        // Získání hodnot z inputů
+        const number1 = parseFloat(document.getElementById('number1').value);
+        const operation = document.getElementById('operation').value;
+        const number2 = parseFloat(document.getElementById('number2').value);
+        const resultDisplay = document.getElementById('result');
+        let result;
+
+        // Ověření, zda jsou zadány obě hodnoty
+        if (isNaN(number1) || isNaN(number2)) {
+            resultDisplay.textContent = "Zadej obě čísla!";
+            return;
         }
 
-        function appendOperator(operator) {
-            if (currentInput && !isNaN(currentInput[currentInput.length - 1])) {
-                currentInput += operator;
-                display.value = currentInput;
-            }
+        // Výpočet na základě vybrané operace
+        switch (operation) {
+            case '+':
+                result = number1 + number2;
+                break;
+            case '-':
+                result = number1 - number2;
+                break;
+            case '*':
+                result = number1 * number2;
+                break;
+            case '/':
+                // Ověření dělení nulou
+                if (number2 === 0) {
+                    resultDisplay.textContent = "Nelze dělit nulou!";
+                    return;
+                }
+                result = number1 / number2;
+                break;
+            default:
+                resultDisplay.textContent = "Neznámá operace!";
+                return;
         }
 
-        function appendDot() {
-            if (currentInput === '' || currentInput.includes('.')) return;
-            currentInput += '.';
-            display.value = currentInput;
-        }
-
-        function clearDisplay() {
-            currentInput = '';
-            display.value = '';
-        }
-
-        function deleteLast() {
-            currentInput = currentInput.slice(0, -1);
-            display.value = currentInput;
-        }
-
-        function calculate() {
-            try {
-                currentInput = eval(currentInput).toString();
-                display.value = currentInput;
-            } catch {
-                display.value = 'Error';
-                currentInput = '';
-            }
-        }
-    </script>
-
+        // Zobrazení výsledku
+        resultDisplay.textContent = "Výsledek: " + result;
+    }
+</script>
 </body>
 </html>
